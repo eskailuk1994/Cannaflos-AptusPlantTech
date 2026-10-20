@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mothers, Clones & Pro Production · Cannaflos + Aptus</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.577.0/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      --ink: #101411;
+      --panel: #182019;
+      --deep: #111712;
+      --line: #344237;
+      --green: #a8da4d;
+      --orange: #ff7a1a;
+      --cream: #eef2e7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      width: 100%;
+      color: var(--cream);
+      font-family: "DM Sans", sans-serif;
+      background-color: var(--ink);
+      background-image: linear-gradient(#a8da4d0e 1px, transparent 1px), linear-gradient(90deg, #a8da4d0e 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .app-shell { width: 100%; max-width: 1440px; margin: auto; padding: 20px; }
+    .panel { background: #182019f0; border: 1px solid var(--line); box-shadow: 0 14px 38px #0003; }
+    .hero { position: relative; min-height: 200px; overflow: hidden; border: 1px solid var(--line); background: #172018; }
+    .hero-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
+    .hero:after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #0a0e0bf2 10%, #0a0e0bc0 60%, #0a0e0b72); pointer-events: none; }
+    .hero-content { position: relative; z-index: 1; }
+    .brand-lockup { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; flex-wrap: wrap; }
+    .brand-logo-img { height: 32px; width: auto; object-fit: contain; background: #ffffff10; padding: 3px 8px; border-radius: 4px; border: 1px solid #344237; }
+    .brand-separator { color: var(--orange); font-weight: 700; font-size: 1.2rem; }
+    .hero-links { position: absolute; right: 24px; top: 24px; display: flex; gap: 10px; z-index: 10; }
+    .mono, .eyebrow, th { font-family: "Space Mono", monospace; }
+    .eyebrow { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); }
+    .nav-tab { color: #c2ccc1; border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.2s; cursor: pointer; }
+    .nav-tab:hover { background: #ffffff0c; color: white; }
+    .nav-tab.is-active { color: var(--green); border-color: var(--orange); background: #ff7a1a14; }
+    .view { display: none; }
+    .view.is-active { display: block; animation: rise 0.25s ease both; }
+    @keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; }
+    .data-table { width: 100%; min-width: 760px; border-collapse: collapse; }
+    .data-table th { text-align: left; padding: 0.8rem; color: var(--green); font-weight: 400; font-size: 0.7rem; letter-spacing: 0.05em; text-transform: uppercase; background: #121a13; border-bottom: 1px solid var(--line); }
+    .data-table td { padding: 0.7rem 0.8rem; border-bottom: 1px solid #344237b8; font-size: 0.85rem; color: #dce5d9; vertical-align: middle; }
+    .control { width: 100%; background: #101610; color: var(--cream); border: 1px solid #435246; border-radius: 6px; padding: 0.6rem 0.8rem; font: 0.85rem "Space Mono", monospace; }
+    .cell-control { width: 100%; background: #101610; color: var(--cream); border: 1px solid #344237; border-radius: 4px; padding: 0.4rem; font-size: 0.8rem; }
+    .button-primary { background: var(--orange); color: #1b160f; border: 1px solid var(--orange); font-weight: 700; border-radius: 6px; padding: 0.6rem 1rem; transition: all 0.2s; cursor: pointer; }
+    .button-primary:hover { filter: brightness(1.15); transform: translateY(-1px); }
+    .button-secondary { background: #a8da4d0f; color: var(--green); border: 1px solid #5d7741; font-weight: 600; border-radius: 6px; padding: 0.5rem 0.9rem; transition: all 0.2s; cursor: pointer; }
+    .button-secondary:hover { background: #a8da4d22; }
+    .choice.is-active { background: var(--orange) !important; color: #1b160f !important; border-color: var(--orange) !important; }
+    .step-button { width: 100%; text-align: left; border: 1px solid #405243; border-radius: 6px; background: #121912; color: #d5ded2; padding: 0.65rem 0.8rem; font: 0.78rem "Space Mono", monospace; cursor: pointer; transition: all 0.2s; }
+    .step-button.done { background: var(--green); border-color: var(--green); color: #172012; font-weight: 700; }
+    .alert-box { border-left: 3px solid var(--orange); background: #ff7a1a14; color: #ffd3af; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- CABECERA PRINCIPAL CON TUS LOGOS NUEVOS -->
+    <header class="hero rounded-lg p-6 md:p-8 mb-4">
+      <img class="hero-image" src="https://images.unsplash.com/photo-1536819114556-1e10f967fb61?auto=format&fit=crop&w=1200&q=80" alt="Cannabis Header">
+      <div class="hero-content">
+        <p class="eyebrow mb-2">CANNAFLOS + APTUS · TRUE PLANT SCIENCE</p>
+        <div class="brand-lockup">
+          <!-- Logo Cannaflos Local -->
+          <img src="cannaflos.png" alt="Cannaflos" class="brand-logo-img" style="height: 36px;" onerror="this.replaceWith(Object.assign(document.createElement('span'), {className:'brand-logo-text cannaflos-mark', innerText:'CANNAFLOS'}))">
+          <span class="brand-separator">×</span>
+          <!-- Logo Aptus Local -->
+          <img src="Aptus_plant_tech_trans.png" alt="Aptus Plant Tech" class="brand-logo-img" style="height: 36px; background: #182019;" onerror="this.replaceWith(Object.assign(document.createElement('span'), {className:'brand-logo-text aptus-mark', innerText:'APTUS PLANT TECH'}))">
+        </div>
+        <h1 class="text-3xl font-bold tracking-tight text-white mb-1">MOTHERS & CLONES</h1>
+        <p class="text-sm text-[#c2ccc1]">Plant traceability, irrigation, mixing and weekly Aptus production programs</p>
+      </div>
+      <div class="hero-links">
+        <a href="https://aptus-holland.com/es/" target="_blank" rel="noopener" class="button-secondary text-xs inline-flex items-center gap-1">
+          Aptus Holland <i data-lucide="external-link" class="w-3 h-3"></i>
+        </a>
+        <a href="https://cannaflos.de/homepage/genetics/" target="_blank" rel="noopener" class="button-secondary text-xs inline-flex items-center gap-1">
+          Cannaflos <i data-lucide="external-link" class="w-3 h-3"></i>
+        </a>
+      </div>
+    </header>
+
+    <!-- NAVEGACIÓN PRINCIPAL -->
+    <nav class="panel rounded-lg mb-4 overflow-x-auto">
+      <div class="flex min-w-max">
+        <button class="nav-tab is-active px-5 py-3.5 font-semibold text-sm" data-tab="mothers">Mothers & Clones</button>
+        <button class="nav-tab px-5 py-3.5 font-semibold text-sm" data-tab="irrigation">Irrigation & Mixing</button>
+        <button class="nav-tab px-5 py-3.5 font-semibold text-sm" data-tab="production">Premium</button>
+        <button class="nav-tab px-5 py-3.5 font-semibold text-sm" data-tab="clean">CLEAN</button>
+        <button class="nav-tab px-5 py-3.5 font-semibold text-sm" data-tab="feeding">Aptus Feeding Schedule</button>
+      </div>
+    </nav>
+
+    <main>
+      <!-- VISTA 1: MOTHERS & CLONES -->
+      <section id="view-mothers" class="view is-active">
+        <div class="panel rounded-lg p-5">
+          <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+            <div>
+              <p class="eyebrow">PLANT TRACEABILITY</p>
+              <h2 class="text-xl font-bold text-white">Mothers & Clones</h2>
+            </div>
+            <button id="add-plant-btn" class="button-primary text-sm">+ Add New Plant/Batch</button>
+          </div>
+          <p class="text-xs text-[#a0ada0] mb-4">Edit a field and leave it to save automatically. Type and Status have dropdown options.</p>
+          
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>PLANT/BATCH ID</th>
+                  <th>GENETICS</th>
+                  <th>TYPE</th>
+                  <th>STATUS</th>
+                  <th>PHENOTYPE / VIGOR</th>
+                  <th>CLONES</th>
+                  <th>HEALTH</th>
+                  <th>IRRIGATION / RECIPE</th>
+                  <th>OBSERVATIONS</th>
+                  <th>ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody id="plants-tbody"></tbody>
+            </table>
+          </div>
+          <p id="plants-empty-msg" class="text-sm text-[#8a998a] text-center py-6">No plants or batches added yet. Click "+ Add New Plant/Batch" above.</p>
+        </div>
+      </section>
+
+      <!-- VISTA 2: IRRIGATION & MIXING -->
+      <section id="view-irrigation" class="view">
+        <div class="panel rounded-lg p-5">
+          <p class="eyebrow mb-1">OPERATING PROTOCOL</p>
+          <h2 class="text-xl font-bold text-white mb-1">Irrigation & Mixing</h2>
+          <p class="text-xs text-[#a0ada0] mb-4">Select a program, calculate amounts by volume and complete mixing steps in order.</p>
+
+          <div class="flex gap-2 mb-4">
+            <button class="prog-btn button-secondary choice is-active text-xs" data-program="mothers">Mothers</button>
+            <button class="prog-btn button-secondary choice text-xs" data-program="clones">Clones</button>
+            <button class="prog-btn button-secondary choice text-xs" data-program="premium">Premium</button>
+            <button class="prog-btn button-secondary choice text-xs" data-program="clean">Clean</button>
+          </div>
+
+          <div class="table-scroll mb-5">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width: 70px;">ORDER</th>
+                  <th>PRODUCT</th>
+                  <th>REFERENCE DOSE</th>
+                  <th style="width: 100px;">WATER</th>
+                  <th>COMMENT</th>
+                </tr>
+              </thead>
+              <tbody id="recipe-tbody"></tbody>
+            </table>
+          </div>
+
+          <div class="grid lg:grid-cols-2 gap-5">
+            <div class="panel rounded-lg p-4">
+              <p class="eyebrow mb-1">MIX CALCULATOR</p>
+              <h3 class="font-bold text-white mb-3">Calculate by volume</h3>
+              <label class="block text-xs mb-1 text-[#c2ccc1]">Liters of water</label>
+              <input id="mix-liters" type="number" value="10" min="0.1" step="0.1" class="control mb-3">
+              <div class="alert-box p-3 rounded text-xs mb-3">
+                Reference amounts only. Check the approved recipe, EC and pH before applying.
+              </div>
+              <div id="mix-calculated-list" class="space-y-2 text-xs"></div>
+            </div>
+
+            <div class="panel rounded-lg p-4">
+              <p class="eyebrow mb-1">PROTOCOL</p>
+              <h3 class="font-bold text-white mb-1">Mixing steps</h3>
+              <p class="text-xs text-[#a0ada0] mb-3">Complete each step in order. Skipping a step displays a warning.</p>
+              <div id="mix-steps-list" class="space-y-2 mb-3"></div>
+              <button id="reset-steps-btn" class="button-secondary text-xs w-full mt-2">Reset steps</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VISTA 3: PREMIUM -->
+      <section id="view-production" class="view">
+        <div class="panel rounded-lg p-5">
+          <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+            <div>
+              <p class="eyebrow">ORGANO-MINERAL PROGRAM</p>
+              <h2 class="text-xl font-bold text-white">Premium Schedule</h2>
+            </div>
+            <div class="flex items-center gap-3">
+              <div>
+                <label class="block text-xs mb-1">Week</label>
+                <select id="prod-week-select" class="control text-xs" style="width: 110px;">
+                  <option value="1">Veg W1</option>
+                  <option value="2">Veg W2-4</option>
+                  <option value="3">Flower W1</option>
+                  <option value="4">Flower W2</option>
+                  <option value="5">Flower W3</option>
+                  <option value="6">Flower W4</option>
+                  <option value="7">Flower W5</option>
+                  <option value="8">Flower W6</option>
+                  <option value="9">Maturation W7</option>
+                  <option value="10">Maturation W8</option>
+                  <option value="11">Flush</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs mb-1">Liters of water</label>
+                <input id="prod-liters-input" type="number" value="10" min="1" class="control text-xs" style="width: 100px;">
+              </div>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-3 mb-4">
+            <div class="bg-[#111712] border border-[#344237] p-3 rounded">
+              <p class="eyebrow">PERIOD</p>
+              <p id="prod-card-week" class="text-lg font-bold text-[#ffb175]">Vegetative</p>
+            </div>
+            <div class="bg-[#111712] border border-[#344237] p-3 rounded">
+              <p class="eyebrow">TARGET pH</p>
+              <p id="prod-card-phase" class="text-sm font-semibold text-white">pH 5.8</p>
+            </div>
+            <div class="bg-[#111712] border border-[#344237] p-3 rounded">
+              <p class="eyebrow">CONDITIONER & ENZYM+</p>
+              <p id="prod-card-goal" class="text-xs text-[#c2ccc1]">RO Water Conditioner (0.25 ml/L) + Enzym+ (0.25 ml/L)</p>
+            </div>
+          </div>
+
+          <div class="table-scroll mb-4">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>PRODUCT</th>
+                  <th>REFERENCE DOSE</th>
+                  <th>CALCULATED AMOUNT</th>
+                  <th>COMMENT / MIXING</th>
+                </tr>
+              </thead>
+              <tbody id="prod-recipe-tbody"></tbody>
+            </table>
+          </div>
+
+          <div class="bg-[#a8da4d14] border-l-4 border-[#a8da4d] p-3 rounded text-xs text-[#e2f9b7]">
+            <p class="font-bold mb-1">Important Guidelines</p>
+            <p>* When using RO Water, add RO Water Conditioner first to EC 0.3. ** To limit stretch use 0.3ml/L Regulator in week 1-3 of flower.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- VISTA 4: CLEAN -->
+      <section id="view-clean" class="view">
+        <div class="panel rounded-lg p-5">
+          <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+            <div>
+              <p class="eyebrow">CLEAN COMMERCIAL PROGRAM</p>
+              <h2 class="text-xl font-bold text-white">Clean Schedule</h2>
+            </div>
+            <div class="flex items-center gap-3">
+              <div>
+                <label class="block text-xs mb-1">Week</label>
+                <select id="clean-week-select" class="control text-xs" style="width: 110px;">
+                  <option value="1">Veg W1</option>
+                  <option value="2">Veg W2-4</option>
+                  <option value="3">Flower W1</option>
+                  <option value="4">Flower W2</option>
+                  <option value="5">Flower W3</option>
+                  <option value="6">Flower W4</option>
+                  <option value="7">Flower W5</option>
+                  <option value="8">Flower W6</option>
+                  <option value="9">Maturation W7</option>
+                  <option value="10">Maturation W8</option>
+                  <option value="11">Flush</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs mb-1">Liters of water</label>
+                <input id="clean-liters-input" type="number" value="10" min="1" class="control text-xs" style="width: 100px;">
+              </div>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-3 mb-4">
+            <div class="bg-[#111712] border border-[#344237] p-3 rounded">
+              <p class="eyebrow">PERIOD</p>
+              <p id="clean-card-week" class="text-lg font-bold text-[#ffb175]">Vegetative</p>
+            </div>
+            <div class="bg-[#111712] border border-[#344237] p-3 rounded">
+              <p class="eyebrow">TARGET pH</p>
+              <p id="clean-card-phase" class="text-sm font-semibold text-white">pH 5.8</p>
+            </div>
+            <div class="bg-[#111712] border border-[#344237] p-3 rounded">
+              <p class="eyebrow">TANK MAINTENANCE</p>
+              <p id="clean-card-goal" class="text-xs text-[#c2ccc1]">Stable up to 10 days in reservoir.</p>
+            </div>
+          </div>
+
+          <div class="table-scroll mb-4">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>PRODUCT</th>
+                  <th>REFERENCE DOSE</th>
+                  <th>CALCULATED AMOUNT</th>
+                  <th>COMMENT / MIXING</th>
+                </tr>
+              </thead>
+              <tbody id="clean-recipe-tbody"></tbody>
+            </table>
+          </div>
+
+          <div class="bg-[#a8da4d14] border-l-4 border-[#a8da4d] p-3 rounded text-xs text-[#e2f9b7]">
+            <p class="font-bold mb-1">Clean Program Notes</p>
+            <p>* Once a week or continuously. ** Complete water-soluble nutrition with incorporated RO water conditioner. *** To limit stretch use 0,3ml/L REGULATOR in week 1-3 of flower.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- VISTA 5: APTUS FEEDING SCHEDULE -->
+      <section id="view-feeding" class="view">
+        <div class="panel rounded-lg p-5">
+          <p class="eyebrow mb-1">OFFICIAL APTUS CHARTS</p>
+          <h2 class="text-xl font-bold text-white mb-4">Feeding Schedules</h2>
+
+          <div class="flex gap-2 mb-4">
+            <button class="feed-btn button-secondary choice is-active text-xs" data-feed="mothers">Mothers</button>
+            <button class="feed-btn button-secondary choice text-xs" data-feed="premium">Premium</button>
+            <button class="feed-btn button-secondary choice text-xs" data-feed="clean">Clean</button>
+          </div>
+
+          <!-- TABLA MADRES -->
+          <div id="feed-img-mothers" class="feed-view-group space-y-4">
+            <img src="madres.jpg" class="w-full h-auto rounded border border-[#344237]" alt="Programa Madres Aptus">
+          </div>
+
+          <!-- TABLA PREMIUM -->
+          <div id="feed-img-premium" class="feed-view-group hidden space-y-4">
+            <img src="premium-tabla.jpg" class="w-full h-auto rounded border border-[#344237]" alt="Aptus Premium Table">
+            <img src="premium-botellas.jpg" class="w-full h-auto rounded border border-[#344237]" alt="Aptus Premium Bottles">
+          </div>
+
+          <!-- TABLA CLEAN -->
+          <div id="feed-img-clean" class="feed-view-group hidden space-y-4">
+            <img src="clean-tabla.jpg" class="w-full h-auto rounded border border-[#344237]" alt="Aptus Clean Table">
+            <img src="clean-botellas.jpg" class="w-full h-auto rounded border border-[#344237]" alt="Aptus Clean Bottles">
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const RECIPES = {
+      mothers: [
+        { order: "1", product: "CaMg Boost", dose: "2.5 ml per 10 liters", factor: 0.25, unit: "ml", water: "10 L", comment: "Add first, according to the indicated EC." },
+        { order: "2", product: "Regulator", dose: "1.5 ml per 10 liters", factor: 0.15, unit: "ml", water: "10 L", comment: "Add according to the approved recipe." },
+        { order: "3", product: "All In One Liquid", dose: "10 ml per 10 liters", factor: 1.0, unit: "ml", water: "10 L", comment: "Add as the nutrient base." },
+        { order: "4", product: "Startbooster", dose: "2.5–5 ml per 10 liters", factor: 0.375, unit: "ml", water: "10 L", comment: "Reference range; check the approved recipe." },
+        { order: "5", product: "Enzym+", dose: "2.5 ml per 10 liters", factor: 0.25, unit: "ml", water: "10 L", comment: "Add before final checks." },
+        { order: "6", product: "pH Check", dose: "5.8–6.2", factor: 0, unit: "pH", water: "—", comment: "Check and adjust pH at the end." },
+        { order: "—", product: "Micromix Soil (OPTIONAL)", dose: "1 g per liter of substrate", factor: 0, unit: "g", water: "10 L", comment: "Optional; not part of the required sequence." },
+        { order: "—", product: "Mycor Mix (OPTIONAL)", dose: "1 g/L in water", factor: 0, unit: "g", water: "10 L", comment: "Follow the approved protocol." }
+      ],
+      clones: [
+        { order: "1", product: "Soak substrate with reverse-osmosis water", dose: "Per approved protocol", factor: 0, unit: "", water: "—", comment: "soak the substrate with the follow Aptus solution" },
+        { order: "2", product: "CaMg Boost", dose: "Ec = 0,6", factor: 0.25, unit: "ml", water: "—", comment: "Base structural" },
+        { order: "3", product: "Regulator", dose: "1.5 ml per 10 liters", factor: 0.15, unit: "ml", water: "10 L", comment: "Add after CaMg Boost." },
+        { order: "4", product: "Startbooster", dose: "1 ml per 10 liters", factor: 0.1, unit: "ml", water: "10 L", comment: "Check the approved recipe." },
+        { order: "5", product: "Nutri Spray", dose: "Per approved protocol", factor: 0.2, unit: "ml", water: "—", comment: "Spray according to protocol." },
+        { order: "6", product: "Repeat application", dose: "Per approved protocol", factor: 0, unit: "", water: "—", comment: "repeat the indicated application until roots appear" },
+        { order: "7", product: "CaMg Boost", dose: "Ec = 0,6", factor: 0.25, unit: "ml", water: "—", comment: "follow this recipe when the roots appear" },
+        { order: "8", product: "Regulator", dose: "1.5 ml per 10 liters", factor: 0.15, unit: "ml", water: "10 L", comment: "Add after CaMg Boost." },
+        { order: "9", product: "Startbooster", dose: "2.5–5 ml per 10 liters", factor: 0.35, unit: "ml", water: "10 L", comment: "Check the approved recipe." },
+        { order: "10", product: "All In One C", dose: "1–1.4 ml per 10 liters", factor: 0.12, unit: "ml", water: "10 L", comment: "Finish with All In One C." },
+        { order: "11", product: "pH Check", dose: "6.2–6.4", factor: 0, unit: "pH", water: "—", comment: "Verify pH at the end." },
+        { order: "—", product: "Rooting hormones (OPTIONAL)", dose: "Per label", factor: 0, unit: "", water: "10 L", comment: "Follow the product label and approved protocol." }
+      ],
+      premium: [
+        { order: "1", product: "Regulator", dose: "0.15 ml/L", factor: 0.15, unit: "ml", water: "10 L", comment: "Add first to fresh water." },
+        { order: "2", product: "CaMg Boost", dose: "0.25–0.5 ml/L", factor: 0.35, unit: "ml", water: "10 L", comment: "Calcium & Magnesium base." },
+        { order: "3", product: "All In One Liquid", dose: "0.8–1.5 ml/L", factor: 1.2, unit: "ml", water: "10 L", comment: "Main NPK nutrition." },
+        { order: "4", product: "Startbooster", dose: "0.25–0.5 ml/L", factor: 0.35, unit: "ml", water: "10 L", comment: "Root and vegetative booster." },
+        { order: "5", product: "pH Check", dose: "5.8–6.2", factor: 0, unit: "pH", water: "—", comment: "Check final pH." }
+      ],
+      clean: [
+        { order: "1", product: "Regulator", dose: "0.15 ml/L", factor: 0.15, unit: "ml", water: "10 L", comment: "Commercial stability base." },
+        { order: "2", product: "All-In-One Pro", dose: "1–2.5 g/L", factor: 1.5, unit: "g", water: "10 L", comment: "Water soluble nutrition." },
+        { order: "3", product: "Breakout Pro", dose: "0.25–0.75 g/L", factor: 0.5, unit: "g", water: "10 L", comment: "Flowering booster." },
+        { order: "4", product: "pH Check", dose: "5.8–6.2", factor: 0, unit: "pH", water: "—", comment: "Maintain stable pH." }
+      ]
+    };
+
+    const PREMIUM_WEEKS = {
+      "1": { period: "Vegetative - Week 1", ph: "pH 5.8", reg: "0.15 ml/L", camg: "0.25 ml/L", pboost: "-", kboost: "-", allinone: "0.8–1 ml/L", start: "0.25 ml/L", top: "-" },
+      "2": { period: "Vegetative - Week 2-3-4", ph: "pH 5.8", reg: "0.15 ml/L", camg: "0.25 ml/L", pboost: "-", kboost: "-", allinone: "1-1.2 ml/L", start: "0.25 ml/L", top: "-" },
+      "3": { period: "Flower - Early W1", ph: "pH 5.9", reg: "0.15-0.3 ml/L", camg: "0.5 ml/L", pboost: "0.1 ml/L", kboost: "-", allinone: "1.2-1.5 ml/L", start: "0.5 ml/L", top: "-" },
+      "4": { period: "Flower - Early W2", ph: "pH 6.0", reg: "0.15-0.3 ml/L", camg: "0.5 ml/L", pboost: "0.2 ml/L", kboost: "-", allinone: "1.2-1.5 ml/L", start: "-", top: "0.2 ml/L" },
+      "5": { period: "Flower - Early W3", ph: "pH 6.0", reg: "0.15-0.3 ml/L", camg: "0.5 ml/L", pboost: "0.2 ml/L", kboost: "0.2 ml/L", allinone: "1.2-1.5 ml/L", start: "-", top: "0.3 ml/L" },
+      "6": { period: "Flower - Late W4", ph: "pH 6.1", reg: "0.15 ml/L", camg: "0.5 ml/L", pboost: "0.1 ml/L", kboost: "0.3 ml/L", allinone: "1.5-1.8 ml/L", start: "-", top: "0.3 ml/L" },
+      "7": { period: "Flower - Late W5", ph: "pH 6.1", reg: "0.15 ml/L", camg: "0.5 ml/L", pboost: "-", kboost: "0.3 ml/L", allinone: "1.5-1.8 ml/L", start: "-", top: "0.3 ml/L" },
+      "8": { period: "Flower - Late W6", ph: "pH 6.2", reg: "0.15 ml/L", camg: "0.5 ml/L", pboost: "-", kboost: "0.4 ml/L", allinone: "1.5-1.8 ml/L", start: "-", top: "0.4 ml/L" },
+      "9": { period: "Maturation - W7", ph: "pH 6.2", reg: "0.15 ml/L", camg: "0.5 ml/L", pboost: "-", kboost: "0.5 ml/L", allinone: "1.2-1.5 ml/L", start: "-", top: "0.5 ml/L" },
+      "10": { period: "Maturation - W8", ph: "pH 6.2", reg: "0.15 ml/L", camg: "0.25 ml/L", pboost: "-", kboost: "0.7 ml/L", allinone: "0.8-1 ml/L", start: "-", top: "-" },
+      "11": { period: "Flush - Final Week", ph: "pH 6.2", reg: "-", camg: "-", pboost: "-", kboost: "-", allinone: "-", start: "-", top: "-" }
+    };
+
+    const CLEAN_WEEKS = {
+      "1": { period: "Vegetative - Week 1", ph: "pH 5.8", reg: "0.15 ml/L", allinonepro: "1 gr/L", breakout: "-", kboost: "-" },
+      "2": { period: "Vegetative - Week 2-3-4", ph: "pH 5.8", reg: "0.15 ml/L", allinonepro: "1 gr/L", breakout: "-", kboost: "-" },
+      "3": { period: "Flower - Early W1", ph: "pH 5.9", reg: "0.15-0.3 ml/L", allinonepro: "1 gr/L", breakout: "-", kboost: "-" },
+      "4": { period: "Flower - Early W2", ph: "pH 6.0", reg: "0.15-0.3 ml/L", allinonepro: "2 gr/L", breakout: "-", kboost: "-" },
+      "5": { period: "Flower - Early W3", ph: "pH 6.0", reg: "0.15-0.3 ml/L", allinonepro: "2 gr/L", breakout: "0.25 gr/L", kboost: "-" },
+      "6": { period: "Flower - Late W4", ph: "pH 6.1", reg: "0.15 ml/L", allinonepro: "2 gr/L", breakout: "0.5 gr/L", kboost: "-" },
+      "7": { period: "Flower - Late W5", ph: "pH 6.1", reg: "0.15 ml/L", allinonepro: "2.5 gr/L", breakout: "-", kboost: "0.5 ml/L" },
+      "8": { period: "Flower - Late W6", ph: "pH 6.2", reg: "0.15 ml/L", allinonepro: "2.5 gr/L", breakout: "-", kboost: "0.5 ml/L" },
+      "9": { period: "Maturation - W7", ph: "pH 6.2", reg: "0.15 ml/L", allinonepro: "2.5 gr/L", breakout: "0.75 gr/L", kboost: "0.5 ml/L" },
+      "10": { period: "Maturation - W8", ph: "pH 6.2", reg: "0.15 ml/L", allinonepro: "2 gr/L", breakout: "-", kboost: "0.5 ml/L" },
+      "11": { period: "Flush - Final Week", ph: "pH 6.2", reg: "0.15 ml/L", allinonepro: "1 gr/L", breakout: "-", kboost: "-" }
+    };
+
+    let activeProgram = 'mothers';
+    let completedSteps = new Set();
+    let plants = JSON.parse(localStorage.getItem('cannaflos_plants') || '[]');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderPlantsTable();
+      renderRecipeTable();
+      renderPremiumTable();
+      renderCleanTable();
+
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('is-active'));
+          document.querySelectorAll('.view').forEach(v => v.classList.remove('is-active'));
+          e.target.classList.add('is-active');
+          document.getElementById(`view-${e.target.dataset.tab}`).classList.add('is-active');
+        });
+      });
+
+      document.querySelectorAll('.prog-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.prog-btn').forEach(b => b.classList.remove('is-active'));
+          e.target.classList.add('is-active');
+          activeProgram = e.target.dataset.program;
+          completedSteps.clear();
+          renderRecipeTable();
+        });
+      });
+
+      document.querySelectorAll('.feed-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.feed-btn').forEach(b => b.classList.remove('is-active'));
+          e.target.classList.add('is-active');
+          document.querySelectorAll('.feed-view-group').forEach(g => g.classList.add('hidden'));
+          document.getElementById(`feed-img-${e.target.dataset.feed}`).classList.remove('hidden');
+        });
+      });
+
+      document.getElementById('mix-liters').addEventListener('input', renderMixCalculated);
+      document.getElementById('reset-steps-btn').addEventListener('click', () => {
+        completedSteps.clear();
+        renderMixSteps();
+      });
+
+      document.getElementById('prod-week-select').addEventListener('change', renderPremiumTable);
+      document.getElementById('prod-liters-input').addEventListener('input', renderPremiumTable);
+      document.getElementById('clean-week-select').addEventListener('change', renderCleanTable);
+      document.getElementById('clean-liters-input').addEventListener('input', renderCleanTable);
+
+      document.getElementById('add-plant-btn').addEventListener('click', () => {
+        plants.push({
+          id: Date.now(),
+          batchId: `BATCH-${Math.floor(100 + Math.random() * 900)}`,
+          genetics: '',
+          type: 'Mother',
+          status: 'Rooting',
+          pheno: '',
+          clones: 0,
+          health: 'Good',
+          irrigation: '',
+          observations: ''
+        });
+        savePlants();
+      });
+    });
+
+    function savePlants() {
+      localStorage.setItem('cannaflos_plants', JSON.stringify(plants));
+      renderPlantsTable();
+    }
+
+    function renderPlantsTable() {
+      const tbody = document.getElementById('plants-tbody');
+      const emptyMsg = document.getElementById('plants-empty-msg');
+      tbody.innerHTML = '';
+
+      if (plants.length === 0) {
+        emptyMsg.classList.remove('hidden');
+        return;
+      }
+      emptyMsg.classList.add('hidden');
+
+      plants.forEach((plant, idx) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><input class="cell-control" value="${plant.batchId}" onchange="updatePlant(${idx}, 'batchId', this.value)"></td>
+          <td><input class="cell-control" value="${plant.genetics}" placeholder="e.g. Gelato" onchange="updatePlant(${idx}, 'genetics', this.value)"></td>
+          <td>
+            <select class="cell-control" onchange="updatePlant(${idx}, 'type', this.value)">
+              <option value="Mother" ${plant.type === 'Mother' ? 'selected' : ''}>Mother</option>
+              <option value="Clone" ${plant.type === 'Clone' ? 'selected' : ''}>Clone</option>
+              <option value="Batch" ${plant.type === 'Batch' ? 'selected' : ''}>Batch</option>
+            </select>
+          </td>
+          <td>
+            <select class="cell-control" onchange="updatePlant(${idx}, 'status', this.value)">
+              <option value="Rooting" ${plant.status === 'Rooting' ? 'selected' : ''}>Rooting</option>
+              <option value="Active" ${plant.status === 'Active' ? 'selected' : ''}>Active</option>
+              <option value="Maintenance" ${plant.status === 'Maintenance' ? 'selected' : ''}>Maintenance</option>
+            </select>
+          </td>
+          <td><input class="cell-control" value="${plant.pheno}" onchange="updatePlant(${idx}, 'pheno', this.value)"></td>
+          <td><input class="cell-control" type="number" value="${plant.clones}" onchange="updatePlant(${idx}, 'clones', this.value)"></td>
+          <td><input class="cell-control" value="${plant.health}" onchange="updatePlant(${idx}, 'health', this.value)"></td>
+          <td><input class="cell-control" value="${plant.irrigation}" onchange="updatePlant(${idx}, 'irrigation', this.value)"></td>
+          <td><input class="cell-control" value="${plant.observations}" onchange="updatePlant(${idx}, 'observations', this.value)"></td>
+          <td>
+            <button onclick="deletePlant(${idx})" class="text-xs bg-red-900/60 text-red-300 hover:bg-red-800 border border-red-700 px-2 py-1 rounded">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    window.updatePlant = (idx, key, val) => {
+      plants[idx][key] = val;
+      localStorage.setItem('cannaflos_plants', JSON.stringify(plants));
+    };
+
+    window.deletePlant = (idx) => {
+      plants.splice(idx, 1);
+      savePlants();
+    };
+
+    function renderRecipeTable() {
+      const tbody = document.getElementById('recipe-tbody');
+      tbody.innerHTML = '';
+      const items = RECIPES[activeProgram] || [];
+
+      items.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="font-bold text-[#ffb175]">${item.order}</td>
+          <td class="font-semibold text-white">${item.product}</td>
+          <td>${item.dose}</td>
+          <td>${item.water}</td>
+          <td class="text-xs text-[#a0ada0]">${item.comment}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      renderMixCalculated();
+      renderMixSteps();
+    }
+
+    function renderMixCalculated() {
+      const liters = parseFloat(document.getElementById('mix-liters').value) || 0;
+      const container = document.getElementById('mix-calculated-list');
+      container.innerHTML = '';
+      const items = RECIPES[activeProgram] || [];
+
+      items.forEach(item => {
+        if (item.factor > 0) {
+          const total = (item.factor * liters).toFixed(2);
+          const div = document.createElement('div');
+          div.className = 'flex justify-between border-b border-[#344237] py-1';
+          div.innerHTML = `<span class="text-white">${item.product}:</span> <span class="font-bold text-[#a8da4d]">${total} ${item.unit}</span>`;
+          container.appendChild(div);
+        } else if (item.unit === 'pH') {
+          const div = document.createElement('div');
+          div.className = 'flex justify-between border-b border-[#344237] py-1';
+          div.innerHTML = `<span class="text-white">${item.product}:</span> <span class="font-bold text-[#ffb175]">Target ${item.dose}</span>`;
+          container.appendChild(div);
+        }
+      });
+    }
+
+    function renderMixSteps() {
+      const container = document.getElementById('mix-steps-list');
+      container.innerHTML = '';
+      const items = (RECIPES[activeProgram] || []).filter(i => i.order !== '—');
+
+      items.forEach((item, idx) => {
+        const isDone = completedSteps.has(idx);
+        const btn = document.createElement('button');
+        btn.className = `step-button ${isDone ? 'done' : ''}`;
+        btn.innerText = `${item.order.padStart(2, '0')} · ${item.product}`;
+        btn.onclick = () => {
+          if (isDone) completedSteps.delete(idx);
+          else completedSteps.add(idx);
+          renderMixSteps();
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function renderPremiumTable() {
+      const weekKey = document.getElementById('prod-week-select').value;
+      const liters = parseFloat(document.getElementById('prod-liters-input').value) || 10;
+      const data = PREMIUM_WEEKS[weekKey];
+
+      document.getElementById('prod-card-week').innerText = data.period;
+      document.getElementById('prod-card-phase').innerText = data.ph;
+
+      const tbody = document.getElementById('prod-recipe-tbody');
+      tbody.innerHTML = '';
+
+      const products = [
+        { name: "RO Water Conditioner", dose: "0.25 ml/L", val: 0.25, unit: "ml" },
+        { name: "Enzym+", dose: "0.25 ml/L", val: 0.25, unit: "ml" },
+        { name: "Regulator", dose: data.reg, val: parseVal(data.reg), unit: "ml" },
+        { name: "CaMg-Boost", dose: data.camg, val: parseVal(data.camg), unit: "ml" },
+        { name: "P-Boost", dose: data.pboost, val: parseVal(data.pboost), unit: "ml" },
+        { name: "K-Boost", dose: data.kboost, val: parseVal(data.kboost), unit: "ml" },
+        { name: "All-In-One Liquid", dose: data.allinone, val: parseVal(data.allinone), unit: "ml" },
+        { name: "Startbooster", dose: data.start, val: parseVal(data.start), unit: "ml" },
+        { name: "Topbooster", dose: data.top, val: parseVal(data.top), unit: "ml" }
+      ];
+
+      products.forEach(p => {
+        if (p.dose !== "-") {
+          const calc = (p.val * liters).toFixed(2);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="font-semibold text-white">${p.name}</td>
+            <td>${p.dose}</td>
+            <td class="font-bold text-[#a8da4d]">${calc} ${p.unit}</td>
+            <td class="text-xs text-[#a0ada0]">Mix well in reservoir</td>
+          `;
+          tbody.appendChild(tr);
+        }
+      });
+    }
+
+    function renderCleanTable() {
+      const weekKey = document.getElementById('clean-week-select').value;
+      const liters = parseFloat(document.getElementById('clean-liters-input').value) || 10;
+      const data = CLEAN_WEEKS[weekKey];
+
+      document.getElementById('clean-card-week').innerText = data.period;
+      document.getElementById('clean-card-phase').innerText = data.ph;
+
+      const tbody = document.getElementById('clean-recipe-tbody');
+      tbody.innerHTML = '';
+
+      const products = [
+        { name: "Regulator", dose: data.reg, val: parseVal(data.reg), unit: "ml" },
+        { name: "All-In-One Pro", dose: data.allinonepro, val: parseVal(data.allinonepro), unit: "g" },
+        { name: "Breakout Pro", dose: data.breakout, val: parseVal(data.breakout), unit: "g" },
+        { name: "K-Boost", dose: data.kboost, val: parseVal(data.kboost), unit: "ml" }
+      ];
+
+      products.forEach(p => {
+        if (p.dose !== "-") {
+          const calc = (p.val * liters).toFixed(2);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="font-semibold text-white">${p.name}</td>
+            <td>${p.dose}</td>
+            <td class="font-bold text-[#a8da4d]">${calc} ${p.unit}</td>
+            <td class="text-xs text-[#a0ada0]">Commercial mix stable up to 10 days</td>
+          `;
+          tbody.appendChild(tr);
+        }
+      });
+    }
+
+    function parseVal(str) {
+      if (!str || str === "-") return 0;
+      const match = str.match(/[\d.]+/);
+      return match ? parseFloat(match[0]) : 0;
+    }
+  </script>
+</body>
+</html>
